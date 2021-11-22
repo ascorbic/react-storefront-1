@@ -1,8 +1,10 @@
 import { useAuthState } from "@saleor/sdk";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { ReactElement } from "react";
 
-import { BaseTemplate } from "@/components";
+import { Layout, Spinner } from "@/components";
 import AddressDisplay from "@/components/checkout/AddressDisplay";
 import { useOrderDetailsByTokenQuery } from "@/saleor/api";
 
@@ -24,21 +26,31 @@ export async function getStaticPaths() {
 const OrderDetailsPage = ({
   token,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
   const { authenticated } = useAuthState();
   const { loading, error, data } = useOrderDetailsByTokenQuery({
     variables: { token: token },
     skip: !token || !authenticated,
   });
 
-  if (loading) return <BaseTemplate isLoading={true}></BaseTemplate>;
+  if (loading) return <Spinner />;
   if (error) return <div>Error : {error.message}</div>;
-  if (!data) {
+
+  if (process.browser && !authenticated) {
+    router.push({
+      pathname: "/account/login",
+      query: { next: `/account/orders/${token}` },
+    });
     return null;
   }
-  let order = data?.orderByToken;
+
+  if (!data || !data.orderByToken) {
+    return null;
+  }
+  let order = data.orderByToken;
 
   return (
-    <BaseTemplate>
+    <>
       <h1 className="text-2xl ml-2 md:ml-20 mt-5 font-bold text-gray-800 mb-2">
         Your order number : {order?.number}
       </h1>
@@ -135,8 +147,12 @@ const OrderDetailsPage = ({
           </div>
         )}
       </div>
-    </BaseTemplate>
+    </>
   );
 };
 
 export default OrderDetailsPage;
+
+OrderDetailsPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
