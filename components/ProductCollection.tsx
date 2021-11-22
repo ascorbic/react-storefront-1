@@ -5,6 +5,7 @@ import { ProductFilterInput, useProductCollectionQuery } from "@/saleor/api";
 import { Pagination } from "./Pagination";
 import { ProductCard } from "./ProductCard";
 import { Spinner } from "./Spinner";
+import useChannels from "./ChannelsProvider/useChannels";
 
 export interface ProductCollectionProps {
   filter?: ProductFilterInput;
@@ -15,8 +16,13 @@ export const ProductCollection = ({
   filter,
   allowMore = true,
 }: ProductCollectionProps) => {
+  const { currentChannel } = useChannels();
+
+  console.log({ slug: currentChannel.slug });
+
   const { loading, error, data, fetchMore } = useProductCollectionQuery({
-    variables: { filter: filter },
+    fetchPolicy: "network-only",
+    variables: { filter: filter, channel: currentChannel.slug },
   });
 
   const onLoadMore = () => {

@@ -12755,6 +12755,7 @@ export type ProductCollectionQueryVariables = Exact<{
   before?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   filter?: Maybe<ProductFilterInput>;
+  channel?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -13581,10 +13582,10 @@ export type ProductPathsQueryHookResult = ReturnType<typeof useProductPathsQuery
 export type ProductPathsLazyQueryHookResult = ReturnType<typeof useProductPathsLazyQuery>;
 export type ProductPathsQueryResult = Apollo.QueryResult<ProductPathsQuery, ProductPathsQueryVariables>;
 export const ProductCollectionDocument = gql`
-    query ProductCollection($before: String, $after: String, $filter: ProductFilterInput) {
+    query ProductCollection($before: String, $after: String, $filter: ProductFilterInput, $channel: String) {
   products(
     first: 4
-    channel: "default-channel"
+    channel: $channel
     after: $after
     before: $before
     filter: $filter
@@ -13621,6 +13622,7 @@ export const ProductCollectionDocument = gql`
  *      before: // value for 'before'
  *      after: // value for 'after'
  *      filter: // value for 'filter'
+ *      channel: // value for 'channel'
  *   },
  * });
  */
