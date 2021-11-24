@@ -10,8 +10,6 @@ import ChannelsProvider from "@/components/ChannelsProvider";
 import React from "react";
 import SaleorProviderWithChannels from "@/components/SaleorProviderWithChannels";
 
-import apolloClient from "@/lib/graphql";
-
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -25,11 +23,11 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <ChannelsProvider>
-      <ApolloProvider client={apolloClient}>
-        <SaleorProviderWithChannels>
+      <SaleorProviderWithChannels>
+        <ApolloProvider client={apolloClient}>
           {getLayout(<Component {...pageProps} />)}
-        </SaleorProviderWithChannels>
-      </ApolloProvider>
+        </ApolloProvider>
+      </SaleorProviderWithChannels>
     </ChannelsProvider>
   );
 };

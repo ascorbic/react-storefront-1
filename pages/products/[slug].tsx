@@ -29,10 +29,12 @@ import {
   useCheckoutByTokenQuery,
   useCreateCheckoutMutation,
 } from "@/saleor/api";
+import useChannels from "@/components/ChannelsProvider/useChannels";
 
 const ProductPage = ({
   productSSG,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { currentChannel } = useChannels();
   const router = useRouter();
   const [checkoutToken, setCheckoutToken] = useLocalStorage(CHECKOUT_TOKEN);
   const [createCheckout] = useCreateCheckoutMutation();
@@ -112,6 +114,7 @@ const ProductPage = ({
       // Theres no checkout, we have to create one
       const { data: createCheckoutData } = await createCheckout({
         variables: {
+          channel: currentChannel.slug,
           email: user?.email || "anonymous@example.com",
           lines: [
             {
@@ -371,7 +374,9 @@ export async function getStaticPaths() {
   const result: ApolloQueryResult<ProductPathsQuery | undefined> =
     await apolloClient.query({
       query: ProductPathsDocument,
-      variables: {},
+      variables: {
+        channel: "default-channel",
+      },
     });
   const paths =
     result.data?.products?.edges.map(({ node }) => ({
@@ -380,7 +385,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: "blocking",
+    fallback: true,
   };
 }
 
@@ -391,6 +396,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       query: ProductBySlugDocument,
       variables: {
         slug: productSlug,
+        channel: "default-channel",
       },
     });
   return {

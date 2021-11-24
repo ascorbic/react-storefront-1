@@ -15,14 +15,9 @@ const apolloClient = new ApolloClient({
   ssrMode: !process.browser,
 });
 
-export const handleCreateSaleorClient = ({
-  currentChannelSlug,
-}: {
-  currentChannelSlug: string;
-}) =>
-  createSaleorClient({
-    apiUrl: API_URI,
-    channel: currentChannelSlug,
-  });
+export const saleorClient = createSaleorClient({
+  apiUrl: API_URI,
+  channel: "default-channel",
+});
 
 export default apolloClient;
