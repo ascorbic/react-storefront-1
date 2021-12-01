@@ -2,9 +2,11 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { useMainMenuQuery } from "@/saleor/api";
+import { MenuQuery, MenuQueryDocument, useMainMenuQuery } from "@/saleor/api";
 
 import { HamburgerButton } from "./HamburgerButton";
+import { ApolloQueryResult } from "@apollo/client";
+import apolloClient from "@/lib/graphql";
 
 export const MainMenu = () => {
   const { loading, error, data } = useMainMenuQuery();
@@ -100,3 +102,52 @@ export const MainMenu = () => {
     </div>
   );
 };
+
+// export const getStaticPaths = async () => {
+//   const result: ApolloQueryResult<MenuQuery | undefined> =
+//     await apolloClient.query({
+//       query: MenuQueryDocument,
+//       variables: { slug: "navbar" },
+//     });
+
+//   console.log(
+//     111,
+//     result.data?.menu?.items?.reduce(
+//       (result, { children }) => [...result, ...children],
+//       []
+//     )
+//   );
+//   const paths =
+//     result.data?.menu?.items
+//       ?.reduce((result, { children }) => [...result, ...children], [])
+//       .map(({ page, category, collection }) => {
+//         // console.log({ page, category, collection });
+//         return {
+//           params: {
+//             slug: category?.slug || collection?.slug || page?.slug,
+//             channel: "default-channel",
+//             locale: "pln-pln",
+//           },
+//         };
+//       }) || [];
+
+//   paths.forEach(({ params: { slug } }) => console.log({ slug }));
+//   return {
+//     paths: paths,
+//     fallback: true,
+//   };
+// };
+
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   const result: ApolloQueryResult<MenuQuery | undefined> =
+//     await apolloClient.query({
+//       query: MenuQueryDocument,
+//       variables: { slug: "navbar" },
+//     });
+//   return {
+//     props: {
+//       menuData: result?.data,
+//     },
+//     revalidate: 60 * 60, // value in seconds, how often ISR will trigger on the server
+//   };
+// };

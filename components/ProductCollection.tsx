@@ -18,8 +18,6 @@ export const ProductCollection = ({
 }: ProductCollectionProps) => {
   const { currentChannel } = useChannels();
 
-  console.log({ slug: currentChannel.slug });
-
   const { loading, error, data, fetchMore } = useProductCollectionQuery({
     fetchPolicy: "network-only",
     variables: { filter: filter, channel: currentChannel.slug },

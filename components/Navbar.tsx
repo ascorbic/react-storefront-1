@@ -16,8 +16,10 @@ import { useCheckoutByTokenQuery } from "@/saleor/api";
 import { useRouter } from "next/router";
 import useChannels from "./ChannelsProvider/useChannels";
 import LocaleSelectDialog from "./LocaleSelectDialog";
+import { useLinksWithChannelsAndLocale } from "pages/utils";
 
 export const Navbar = () => {
+  const { getLink } = useLinksWithChannelsAndLocale();
   const [isLocaleSelectDialogOpen, setLocaleSelectDialogOpen] = useState(false);
   const { currentChannel } = useChannels();
 
@@ -47,7 +49,7 @@ export const Navbar = () => {
           <div className="flex justify-between h-16">
             <div className="flex justify-between items-center">
               <MainMenu />
-              <Link href="/">
+              <Link href={getLink("/")}>
                 <a>
                   <div className="mt-px group block h-16 w-28 relative">
                     <Image src="/saleor.svg" alt="Saleor logo" layout="fill" />

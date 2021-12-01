@@ -66,13 +66,21 @@ export async function getStaticPaths() {
   const result: ApolloQueryResult<CategoryPathsQuery | undefined> =
     await apolloClient.query({
       query: CategoryPathsDocument,
-      variables: {},
+      variables: {
+        channel: "default-channel",
+      },
     });
+
   const paths =
     result.data?.categories?.edges.map(({ node }) => ({
-      params: { slug: node.slug },
+      params: {
+        slug: node.slug,
+        channel: "default-channel",
+        locale: "pln-pln",
+      },
     })) || [];
 
+  paths.forEach(({ params: { slug } }) => console.log({ slug }));
   return {
     paths: paths,
     fallback: true,

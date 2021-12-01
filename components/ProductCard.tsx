@@ -2,6 +2,10 @@ import Link from "next/link";
 import React from "react";
 
 import { ProductCardFragment } from "@/saleor/api";
+import {
+  useLinksWithChannelsAndLocale,
+  useLinksWithChannelsAndLol,
+} from "pages/utils";
 
 const styles = {
   grid: `grid grid-cols-4 gap-4`,
@@ -18,6 +22,10 @@ export interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
+  const { getLink } = useLinksWithChannelsAndLocale();
+  const { paths } = useLinksWithChannelsAndLol();
+
+  console.log(123, { paths });
   let priceDisplay =
     product.pricing?.priceRange?.start?.gross.localizedAmount || "";
   if (
@@ -38,7 +46,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       key={product.id}
       className="relative bg-white border shadow-md hover:shadow-2xl"
     >
-      <Link href={`/products/${product.slug}`} prefetch={false}>
+      <Link href={paths.products(product.slug)} prefetch={false}>
         <a>
           <div
             className="flex rounded flex-col  w-full h-60 bg-gray-200"

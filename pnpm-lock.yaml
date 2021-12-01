@@ -35,6 +35,7 @@ specifiers:
   next-usequerystate: 1.4.0-beta.5
   postcss: 8.3.11
   prettier: 2.4.1
+  qs: ^6.10.1
   react: 17.0.2
   react-dom: 17.0.2
   react-hook-form: ^7.20.2
@@ -62,6 +63,7 @@ dependencies:
   next-seo: 4.28.1_f195614718841b3c14a81ac95268ce58
   next-sitemap: 1.6.203_next@12.0.4
   next-usequerystate: 1.4.0-beta.5_f195614718841b3c14a81ac95268ce58
+  qs: 6.10.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-hook-form: 7.20.2_react@17.0.2
@@ -5628,6 +5630,13 @@ packages:
       postcss: 8.3.11
       postcss-selector-parser: 6.0.6
     dev: true
+
+  /qs/6.10.1:
+    resolution: {integrity: sha512-M528Hph6wsSVOBiYUnGf+K/7w0hNshs/duGsNXPUCLH5XAqjEtiPGwNONLV0tBH8NoGb0mvD5JubnUTrujKDTg==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      side-channel: 1.0.4
+    dev: false
 
   /querystring-es3/0.2.1:
     resolution: {integrity: sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=}

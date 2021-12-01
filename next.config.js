@@ -10,7 +10,7 @@ module.exports = withBundleAnalyzer({
     formats: ["image/avif", "image/webp"],
   },
   i18n: {
-    locales: ["en-US"],
+    locales: ["en-US", "fr-fr", "pl-pl"],
     defaultLocale: "en-US",
   },
 });

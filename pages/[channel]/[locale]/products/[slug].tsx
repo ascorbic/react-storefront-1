@@ -30,11 +30,18 @@ import {
   useCreateCheckoutMutation,
 } from "@/saleor/api";
 import useChannels from "@/components/ChannelsProvider/useChannels";
+import { channels } from "@/components/ChannelsProvider/channelsConfig";
+import {
+  useLinksWithChannelsAndLocale,
+  useLinksWithChannelsAndLol,
+} from "pages/utils";
 
 const ProductPage = ({
   productSSG,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { currentChannel } = useChannels();
+  const { getLink } = useLinksWithChannelsAndLocale();
+  const { paths } = useLinksWithChannelsAndLol();
   const router = useRouter();
   const [checkoutToken, setCheckoutToken] = useLocalStorage(CHECKOUT_TOKEN);
   const [createCheckout] = useCreateCheckoutMutation();
@@ -65,13 +72,28 @@ const ProductPage = ({
     product: ProductDetailsFragment
   ) => {
     if (queryVariant) return queryVariant;
-    else if (product?.variants?.length === 1) {
-      process.browser
-        ? router.push({
-            pathname: "/products/[slug]",
-            query: { variant: product.variants![0]!.id!, slug: product.slug },
-          })
-        : undefined;
+
+    if (product?.variants?.length === 1) {
+      if (process.browser) {
+        router.replace(
+          paths.products(product.slug, { variant: product.variants![0]!.id! })
+          // getLink(
+          //   `/products/${product.slug}?variant=${product.variants![0]!.id!}`
+          // )
+        );
+      }
+
+      //   {
+      //   pathname: "[channel]/[locale]/products/[slug]",
+      //   query: {
+      //     variant: product.variants![0]!.id!,
+      //     slug: product.slug,
+      //     channel,
+      //     locale,
+      //   },
+      // });
+      // }
+
       return product.variants![0]!.id!;
     }
     return "";
@@ -380,7 +402,11 @@ export async function getStaticPaths() {
     });
   const paths =
     result.data?.products?.edges.map(({ node }) => ({
-      params: { slug: node.slug },
+      params: {
+        slug: node.slug,
+        channel: "default-channel",
+        locale: "pl-pl",
+      },
     })) || [];
 
   return {
