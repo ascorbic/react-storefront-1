@@ -30,18 +30,13 @@ import {
   useCreateCheckoutMutation,
 } from "@/saleor/api";
 import useChannels from "@/components/ChannelsProvider/useChannels";
-import { channels } from "@/components/ChannelsProvider/channelsConfig";
-import {
-  useLinksWithChannelsAndLocale,
-  useLinksWithChannelsAndLol,
-} from "pages/utils";
+import { usePaths } from "@/components/utils/paths";
 
 const ProductPage = ({
   productSSG,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { currentChannel } = useChannels();
-  const { getLink } = useLinksWithChannelsAndLocale();
-  const { paths } = useLinksWithChannelsAndLol();
+  const { paths } = usePaths();
   const router = useRouter();
   const [checkoutToken, setCheckoutToken] = useLocalStorage(CHECKOUT_TOKEN);
   const [createCheckout] = useCreateCheckoutMutation();
@@ -77,22 +72,8 @@ const ProductPage = ({
       if (process.browser) {
         router.replace(
           paths.products(product.slug, { variant: product.variants![0]!.id! })
-          // getLink(
-          //   `/products/${product.slug}?variant=${product.variants![0]!.id!}`
-          // )
         );
       }
-
-      //   {
-      //   pathname: "[channel]/[locale]/products/[slug]",
-      //   query: {
-      //     variant: product.variants![0]!.id!,
-      //     slug: product.slug,
-      //     channel,
-      //     locale,
-      //   },
-      // });
-      // }
 
       return product.variants![0]!.id!;
     }
@@ -136,6 +117,7 @@ const ProductPage = ({
       // Theres no checkout, we have to create one
       const { data: createCheckoutData } = await createCheckout({
         variables: {
+          // @ts-ignore
           channel: currentChannel.slug,
           email: user?.email || "anonymous@example.com",
           lines: [
@@ -392,22 +374,41 @@ const ProductPage = ({
 
 export default ProductPage;
 
+const OFFSET = 100;
+
 export async function getStaticPaths() {
-  const result: ApolloQueryResult<ProductPathsQuery | undefined> =
-    await apolloClient.query({
-      query: ProductPathsDocument,
-      variables: {
-        channel: "default-channel",
-      },
-    });
-  const paths =
-    result.data?.products?.edges.map(({ node }) => ({
+  // const paths = await generateProductPaths();
+
+  const paths = [
+    {
       params: {
-        slug: node.slug,
+        slug: "saleor-beanie",
         channel: "default-channel",
         locale: "pl-pl",
       },
-    })) || [];
+    },
+    {
+      params: {
+        slug: "saleor-beanie",
+        channel: "second-channel",
+        locale: "pl-pl",
+      },
+    },
+    {
+      params: {
+        slug: "saleor-mask",
+        channel: "default-channel",
+        locale: "pl-pl",
+      },
+    },
+    {
+      params: {
+        slug: "saleor-mask",
+        channel: "second-channel",
+        locale: "pl-pl",
+      },
+    },
+  ];
 
   return {
     paths,

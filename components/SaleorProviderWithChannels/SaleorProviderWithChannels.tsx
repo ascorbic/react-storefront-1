@@ -10,6 +10,7 @@ const SaleorProviderWithChannels: React.FC = ({ children }) => {
     config: { setChannel },
   } = saleorClient;
 
+  // @ts-ignore
   useEffect(() => setChannel(currentChannel.slug), [currentChannel]);
 
   return <SaleorProvider client={saleorClient}>{children}</SaleorProvider>;

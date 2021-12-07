@@ -1,5 +1,8 @@
 query ProductPaths($after: String, $channel: String!) {
-  products(first: 50, channel: $channel, after: $after) {
+  products(first: 5, channel: $channel, after: $after) {
+    pageInfo {
+      hasNextPage
+    }
     edges {
       cursor
       node {

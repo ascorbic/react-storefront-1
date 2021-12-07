@@ -2,10 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { ProductCardFragment } from "@/saleor/api";
-import {
-  useLinksWithChannelsAndLocale,
-  useLinksWithChannelsAndLol,
-} from "pages/utils";
+import { usePaths } from "@/components/utils/paths";
 
 const styles = {
   grid: `grid grid-cols-4 gap-4`,
@@ -22,10 +19,8 @@ export interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const { getLink } = useLinksWithChannelsAndLocale();
-  const { paths } = useLinksWithChannelsAndLol();
+  const { paths } = usePaths();
 
-  console.log(123, { paths });
   let priceDisplay =
     product.pricing?.priceRange?.start?.gross.localizedAmount || "";
   if (

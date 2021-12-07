@@ -9,8 +9,4 @@ module.exports = withBundleAnalyzer({
     domains: ["vercel.saleor.cloud", "img.youtube.com"],
     formats: ["image/avif", "image/webp"],
   },
-  i18n: {
-    locales: ["en-US", "fr-fr", "pl-pl"],
-    defaultLocale: "en-US",
-  },
 });

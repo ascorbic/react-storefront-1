@@ -40,6 +40,7 @@ export const getStaticPaths = async () => {
     });
 
   const paths =
+    // @ts-ignore
     result.data?.menu?.items?.map(({ page, category, collection }) => {
       return {
         params: {

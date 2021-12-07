@@ -80,7 +80,7 @@ export async function getStaticPaths() {
       },
     })) || [];
 
-  paths.forEach(({ params: { slug } }) => console.log({ slug }));
+  // paths.forEach(({ params: { slug } }) => console.log({ slug }));
   return {
     paths: paths,
     fallback: true,

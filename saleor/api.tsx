@@ -13014,7 +13014,7 @@ export type ProductPathsQueryVariables = Exact<{
 }>;
 
 
-export type ProductPathsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductCountableConnection', edges: Array<{ __typename?: 'ProductCountableEdge', cursor: string, node: { __typename?: 'Product', id: string, slug: string } }> } | null | undefined };
+export type ProductPathsQuery = { __typename?: 'Query', products?: { __typename?: 'ProductCountableConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean }, edges: Array<{ __typename?: 'ProductCountableEdge', cursor: string, node: { __typename?: 'Product', id: string, slug: string } }> } | null | undefined };
 
 export type CurrentUserAddressesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14719,7 +14719,10 @@ export type ProductCollectionLazyQueryHookResult = ReturnType<typeof useProductC
 export type ProductCollectionQueryResult = Apollo.QueryResult<ProductCollectionQuery, ProductCollectionQueryVariables>;
 export const ProductPathsDocument = gql`
     query ProductPaths($after: String, $channel: String!) {
-  products(first: 50, channel: $channel, after: $after) {
+  products(first: 5, channel: $channel, after: $after) {
+    pageInfo {
+      hasNextPage
+    }
     edges {
       cursor
       node {

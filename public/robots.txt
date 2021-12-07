@@ -9,8 +9,8 @@ Disallow: /checkout
 Disallow: /account/*
 
 # Host
-Host: https://localhost:3001
+Host: undefined
 
 # Sitemaps
-Sitemap: https://localhost:3001/sitemap.xml
-Sitemap: https://localhost:3001/[sitemap]
+Sitemap: undefined/sitemap.xml
+Sitemap: undefined/[sitemap]

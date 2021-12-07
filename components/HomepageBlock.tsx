@@ -4,14 +4,14 @@ import React from "react";
 import { MenuItemFragment, ProductFilterInput } from "@/saleor/api";
 
 import { ProductCollection, RichText } from ".";
-import { useLinksWithChannelsAndLocale } from "pages/utils";
+import { usePaths } from "@/components/utils/paths";
 
 export interface HomepageBlockProps {
   menuItem: MenuItemFragment;
 }
 
 export const HomepageBlock = ({ menuItem }: HomepageBlockProps) => {
-  const { getLink } = useLinksWithChannelsAndLocale();
+  const { paths } = usePaths();
 
   const filter: ProductFilterInput = {};
   if (!!menuItem.page?.id) {
@@ -26,11 +26,12 @@ export const HomepageBlock = ({ menuItem }: HomepageBlockProps) => {
   let link = "";
   if (!!menuItem.category?.id) {
     filter.categories = [menuItem.category?.id];
-    link = `/category/${menuItem.category?.slug}`;
+    // link = paths.categories(menuItem.category.slug);
+    link = "";
   }
   if (!!menuItem.collection?.id) {
     filter.collections = [menuItem.collection?.id];
-    link = `/collection/${menuItem.collection?.slug}`;
+    link = paths.collections(menuItem.collection.slug);
   }
   // console.log(123, getLink(link));
   return (
@@ -40,7 +41,7 @@ export const HomepageBlock = ({ menuItem }: HomepageBlockProps) => {
       </h1>
       <ProductCollection filter={filter} allowMore={false} />
       <div className="flex flex-row-reverse p-4">
-        <Link href={getLink(link)}>
+        <Link href={link}>
           <a>
             <p>More →</p>
           </a>
